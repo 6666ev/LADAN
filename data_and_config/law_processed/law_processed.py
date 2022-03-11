@@ -84,9 +84,9 @@ def hanzi_to_num(hanzi_1):
     return int(thou + res + tmp)
 
 
-def get_cutter(dict_path="law_processed/Thuocl_seg.txt", mode='thulac', stop_words_filtered=False):
+def get_cutter(dict_path="data_and_config/law_processed/Thuocl_seg.txt", mode='thulac', stop_words_filtered=False):
     if stop_words_filtered:
-        stopwords = stopwordslist('law_processed/stop_word.txt')  # 这里加载停用词的路径
+        stopwords = stopwordslist('data_and_config/law_processed/stop_word.txt')  # 这里加载停用词的路径
     else:
         stopwords = []
     if mode == 'jieba':
@@ -200,10 +200,10 @@ def lookup_index_for_sentences(x, word2id, doc_len, sent_len):
     return np.array(res)
 
 
-def gen_law_relation(word2id_dict, law_label2index_path='law_processed/law_label2index.pkl', doc_len=10, sent_len=100):
+def gen_law_relation(word2id_dict, law_label2index_path='data_and_config/law_processed/law_label2index.pkl', doc_len=10, sent_len=100):
     law_file_order = pk.load(open(law_label2index_path, 'rb'))
     n_law = len(law_file_order)
-    law_list = law_to_list('law_processed/criminal_law.txt')
+    law_list = law_to_list('data_and_config/law_processed/criminal_law.txt')
     laws = cut_law(law_list, order=law_file_order, cut_sentence=True, cut_penalty=True, stop_words_filtered=True)
     #################################---------------get_data_index_matrix-----------------#################################
     law_1 = cut_law(law_list, order=law_file_order, cut_sentence=True, cut_penalty=False, stop_words_filtered=False)
@@ -259,10 +259,7 @@ def graph_generation(neigh_index):
     return graph, graph_ship
 
 
-def get_law_graph(threshold, word2id_file, doc_len, sent_len):
-    f = open(word2id_file, 'rb')
-    word2id_dict = pk.load(f)
-    f.close()
+def get_law_graph(threshold, word2id_dict, doc_len, sent_len):
     neigh_mat, law_index_matrix = gen_law_relation(word2id_dict, doc_len=doc_len, sent_len=sent_len)
     neigh_index = np.where(neigh_mat > threshold)
     # print(neigh_index)
@@ -271,11 +268,8 @@ def get_law_graph(threshold, word2id_file, doc_len, sent_len):
     graph_list_1, graph_membership = graph_generation(neigh_index)
     return law_index_matrix, graph_list_1, graph_membership, neigh_index
 
-def get_law_graph_large(threshold, word2id_file, doc_len, sent_len):
-    f = open(word2id_file, 'rb')
-    word2id_dict = pk.load(f)
-    f.close()
-    neigh_mat, law_index_matrix = gen_law_relation(word2id_dict, law_label2index_path='law_processed/law_label2index_large.pkl', doc_len=doc_len, sent_len=sent_len)
+def get_law_graph_large(threshold, word2id_dict, doc_len, sent_len):
+    neigh_mat, law_index_matrix = gen_law_relation(word2id_dict, law_label2index_path='data_and_config/law_processed/law_label2index_large.pkl', doc_len=doc_len, sent_len=sent_len)
     neigh_index = np.where(neigh_mat > threshold)
     # print(neigh_index)
     neigh_index = list(zip(*neigh_index))
