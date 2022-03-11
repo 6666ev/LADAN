@@ -134,7 +134,7 @@ for i in range(len(file_list)):
     term_lists = []
     num = 0
 
-    with open('../data/{}_cs.json'.format(file_list[i]), 'r', encoding= 'utf-8') as f:
+    with open('../data/laic/{}_cs.json'.format(file_list[i]), 'r', encoding= 'utf-8') as f:
         idx = 0
         for line in f.readlines():
             idx += 1
