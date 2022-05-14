@@ -134,7 +134,7 @@ for i in range(len(file_list)):
     term_lists = []
     num = 0
 
-    with open('../data/laic/{}_cs.json'.format(file_list[i]), 'r', encoding= 'utf-8') as f:
+    with open('../data/cail_small_sc/{}_cs.json'.format(file_list[i]), 'r', encoding= 'utf-8') as f:
         idx = 0
         for line in f.readlines():
             idx += 1
@@ -151,10 +151,10 @@ for i in range(len(file_list)):
             fact_lists.append(sentence)
             law_label_lists.append(line['law'])
             accu_label_lists.append(line['accu'])
-            term_lists.append(line['term'])
+            term_lists.append(line['time'])
             num += 1
         f.close()
     data_dict = {'fact_list': fact_lists, 'law_label_lists': law_label_lists, 'accu_label_lists': accu_label_lists, 'term_lists': term_lists}
-    pk.dump(data_dict, open('../legal_basis_data/{}_processed_thulac_Legal_basis.pkl'.format(file_list[i]), 'wb'))
+    pk.dump(data_dict, open('../legal_basis_data/cail_small_sc/{}_processed_thulac_Legal_basis.pkl'.format(file_list[i]), 'wb'))
     print(num)
     print('{}_dataset is processed over'.format(file_list[i])+'\n')
